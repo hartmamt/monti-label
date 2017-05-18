@@ -1,16 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import DatePicker from 'material-ui/DatePicker';
+
 const formStyle = {
-  // display: 'inline-block',
   margin: '16px 16px 16px 16px',
   padding: '16px',
-  // margin: '10px',
   align: 'center',
-  //  height: '80vh',
 };
 
 class PrintableTicket extends React.Component {
@@ -34,7 +29,14 @@ class PrintableTicket extends React.Component {
   render() {
     return (
       <Paper style={formStyle}>
-        <div style={{ fontSize: 18, fontWeight: 'bold', align: 'center' }}>
+        <div
+          style={{
+            fontSize: 18,
+            fontWeight: 'bold',
+            textDecoration: 'underline',
+            textAlign: 'center',
+          }}
+        >
           <ul>
             HOLD FOR QC REVIEW<br />
             DO NOT MOVE OR PROCESS WITHOUT APPROVAL FROM QC
@@ -48,65 +50,49 @@ class PrintableTicket extends React.Component {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <TextField
-              floatingLabelText="Part Number"
-              disabled={this.props.readOnly}
-              value={this.state.partNumber}
-              onChange={event => this.setState({ partNumber: event.target.value })}
-            />
-            <TextField
-              floatingLabelText="Quantity"
-              disabled={this.props.readOnly}
-              value={this.state.quantity}
-              onChange={event => this.setState({ quantity: event.target.value })}
-            />
-            <TextField
-              floatingLabelText="Job Number"
-              disabled={this.props.readOnly}
-              value={this.state.jobNumber}
-              onChange={event => this.setState({ jobNumber: event.target.value })}
-            />
-          </div>
-          <div>
-            <TextField
-              floatingLabelText="Hold By"
-              disabled={this.props.readOnly}
-              value={this.state.holdBy}
-              onChange={event => this.setState({ holdBy: event.target.value })}
-            />
-          </div>
-          <div>
-            <DatePicker
-              hintText="Date"
-              autoOk
-              floatingLabelText="Date"
-              container="inline"
-              disabled={this.props.readOnly}
-              value={this.state.ticketDate}
-              onChange={event => this.setState({ ticketDate: event.target.value })}
-            />
-          </div>
-          <div>
-            <TextField
-              floatingLabelText="Reason For Hold"
-              value={this.state.reason}
-              disabled={this.props.readOnly}
-              onChange={event => this.setState({ reason: event.target.value })}
-              multiLine
-              fullWidth
-            />
-          </div>
-          <div
-            className="no-print"
-            style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}
-          >
-            <div style={{ padding: 20 }}>
-              <RaisedButton label="Print" onTouchTap={() => window.print()} primary />
-            </div>
-            <div style={{ padding: 20 }}><RaisedButton label="Reset" secondary /></div>
+            <table>
+              <tr>
+                <td>Part #: </td>
+                <td>{this.state.partNumber}</td>
+              </tr>
+              <tr>
+                <td />
+              </tr>
+              <tr>
+                <td>Qty: </td>
+                <td>{this.state.quantity}</td>
+              </tr>
+              <tr>
+                <td>Job #: </td>
+                <td>{this.state.jobNumber}</td>
+              </tr>
+              <tr>
+                <td />
+              </tr>
+              <tr>
+                <td>On Hold By: </td>
+                <td>{this.state.holdBy}</td>
+              </tr>
+              <tr>
+                <td />
+              </tr>
+              <tr>
+                <td>Date: </td>
+                <td>{this.state.ticketDate.toLocaleDateString('en-US')}</td>
+              </tr>
+              <tr>
+                <td />
+              </tr>
+              <tr>
+                <td>Reason For Hold: </td>
+                <td />
+              </tr>
+              <tr>
+                <td colSpan="2">{this.state.reason}</td>
+              </tr>
+            </table>
           </div>
         </div>
-
       </Paper>
     );
   }
@@ -133,7 +119,6 @@ PrintableTicket.propTypes = {
     ticketDate: PropTypes.date,
     reason: PropTypes.string,
   }),
-  readOnly: PropTypes.bool,
 };
 
 export default PrintableTicket;

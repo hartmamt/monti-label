@@ -1,8 +1,8 @@
 @media print
 {
-  @page {
+  /*@page {
     size: 6in 4in
-  }
+  }*/
   .no-print, .no-print *
   {
       display: none !important;

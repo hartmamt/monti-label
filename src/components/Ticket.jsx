@@ -5,7 +5,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import PrintableTicket from './PrintableTicket';
 
 const formStyle = {
@@ -37,7 +36,7 @@ class Ticket extends React.Component {
 
   render() {
     return (
-      <Paper className="no-print" style={formStyle}>
+      <Paper style={formStyle}>
         <h1>Enter a Ticket</h1>
         <div
           style={{
@@ -104,7 +103,14 @@ class Ticket extends React.Component {
         </div>
 
         <Dialog
-          actions={[<RaisedButton label="Print" onClick={() => window.print()} primary />]}
+          actions={[
+            <RaisedButton
+              className="no-print"
+              label="Print"
+              onClick={() => window.print()}
+              primary
+            />,
+          ]}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
