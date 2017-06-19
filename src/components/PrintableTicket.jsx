@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Barcode from 'react-barcode';
 import Paper from 'material-ui/Paper';
 
 const formStyle = {
-  margin: '16px 16px 16px 16px',
-  padding: '16px',
+  // margin: '16px 16px 16px 16px',
+  // padding: '16px',
   align: 'center',
 };
 
@@ -13,7 +14,6 @@ class PrintableTicket extends React.Component {
     super(props);
 
     this.state = { ...this.props.ticket, open: false };
-
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
   }
@@ -28,7 +28,7 @@ class PrintableTicket extends React.Component {
 
   render() {
     return (
-      <Paper style={formStyle}>
+      <div style={formStyle} className="printable">
         <div
           style={{
             fontSize: 18,
@@ -93,7 +93,16 @@ class PrintableTicket extends React.Component {
             </table>
           </div>
         </div>
-      </Paper>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Barcode
+            displayValue
+            width={1}
+            value={
+              `${this.state.ticketDate.toLocaleDateString('en-US')} - ${this.state.partNumber}`
+            }
+          />
+        </div>
+      </div>
     );
   }
 }
@@ -113,7 +122,7 @@ PrintableTicket.defaultProps = {
 PrintableTicket.propTypes = {
   ticket: PropTypes.shape({
     partNumber: PropTypes.string,
-    quantity: PropTypes.number,
+    quantity: PropTypes.string,
     jobNumber: PropTypes.string,
     holdBy: PropTypes.string,
     ticketDate: PropTypes.date,

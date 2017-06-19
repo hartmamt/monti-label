@@ -8,30 +8,35 @@ import Dialog from 'material-ui/Dialog';
 import PrintableTicket from './PrintableTicket';
 
 const formStyle = {
-  // display: 'inline-block',
   margin: '16px 16px 16px 16px',
   padding: '16px',
-  // margin: '10px',
   align: 'center',
-  //  height: '80vh',
 };
 
 class Ticket extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { ...this.props.ticket, open: false };
-
+    this.state = { ...this.props.ticket, ticketDate: new Date(), open: false };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleSave = this.handleSave.bind(this);
   }
 
   handleOpen() {
     this.setState({ open: true });
+    // if (this.props.admin) {
+    this.props.effects.createTicket({ ...this.state });
+    // }
   }
 
   handleClose() {
     this.setState({ open: false });
+  }
+
+  handleSave() {
+    if (this.props.admin) {
+      this.props.effects.updateTicket({ ...this.state });
+    }
   }
 
   render() {
@@ -44,6 +49,7 @@ class Ticket extends React.Component {
             flexDirection: 'column',
             justifyContent: 'space-between',
           }}
+          className="no-print"
         >
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <TextField
@@ -88,12 +94,45 @@ class Ticket extends React.Component {
             <TextField
               floatingLabelText="Reason For Hold"
               value={this.state.reason}
-              disabled={this.props.readOnly}
+              disabled={this.props.readOnly && !this.props.admin}
               onChange={event => this.setState({ reason: event.target.value })}
               multiLine
               fullWidth
             />
           </div>
+          {this.props.admin
+            ? <div style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}>
+              <TextField
+                floatingLabelText="Investigation / Disposition"
+                value={this.state.disposition}
+                onChange={event => this.setState({ disposition: event.target.value })}
+                multiLine
+                fullWidth
+              />
+            </div>
+            : null}
+          {this.props.admin
+            ? <div style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}>
+              <TextField
+                floatingLabelText="Dispositioned By"
+                value={this.state.dispositionBy}
+                onChange={event => this.setState({ dispositionBy: event.target.value })}
+              />
+              <DatePicker
+                hintText="Date"
+                autoOk
+                floatingLabelText="Date"
+                container="inline"
+                value={this.state.dispositionDate}
+                onChange={event => this.setState({ dispositionDate: event.target.value })}
+              />
+            </div>
+            : null}
+          {this.props.admin
+            ? <div style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}>
+              <RaisedButton label="Save" onTouchTap={this.handleSave} primary />
+            </div>
+            : null}
           <div style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}>
             <div style={{ padding: 20 }}>
               <RaisedButton label="Print" onTouchTap={this.handleOpen} primary />
@@ -107,15 +146,18 @@ class Ticket extends React.Component {
             <RaisedButton
               className="no-print"
               label="Print"
-              onClick={() => window.print()}
+              onClick={() => {
+                window.print();
+              }}
               primary
             />,
           ]}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
+          style={{ padding: 0 }}
         >
-          <PrintableTicket readOnly ticket={this.props.ticket} />
+          <PrintableTicket readOnly ticket={{ ...this.state }} />
         </Dialog>
 
       </Paper>
@@ -133,6 +175,7 @@ Ticket.defaultProps = {
     reason: '',
   },
   readOnly: false,
+  admin: false,
 };
 
 Ticket.propTypes = {
@@ -145,6 +188,7 @@ Ticket.propTypes = {
     reason: PropTypes.string,
   }),
   readOnly: PropTypes.bool,
+  admin: PropTypes.bool,
 };
 
 export default Ticket;

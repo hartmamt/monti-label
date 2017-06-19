@@ -28,8 +28,10 @@ const App = wrapComponentWithState(
         }}
       >
         <div style={{ width: '100%', align: 'center', marginBottom: 60 }}>
-          {state.currentNav === 'ticket' ? <Ticket /> : null}
-          {state.currentNav === 'admin' ? <Tickets tickets={state.tickets} /> : null}
+          {state.currentNav === 'ticket' ? <Ticket effects={effects} admin={false} /> : null}
+          {state.currentNav === 'admin'
+            ? <Tickets effects={effects} tickets={state.tickets} />
+            : null}
         </div>
         <div>
           <BottomNav

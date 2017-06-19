@@ -22,7 +22,7 @@ export default class Tickets extends React.Component {
       startDate: new Date('1961-12-31T03:24:00'),
       endDate: new Date('2020-12-31T03:24:00'),
     };
-
+    this.props.effects.getTickets();
     this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
     this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
   }
@@ -37,7 +37,7 @@ export default class Tickets extends React.Component {
 
   render() {
     return (
-      <Paper style={formStyle}>
+      <Paper style={formStyle} className="no-print">
         <h1>Tickets</h1>
         <div
           style={{
@@ -63,25 +63,34 @@ export default class Tickets extends React.Component {
             />
           </div>
           <List>
-            {this.props.tickets
-              .filter(
-                ticket =>
-                  ticket.ticketDate >= this.state.startDate &&
-                  ticket.ticketDate <= this.state.endDate,
-              )
-              .map((ticket, counter) => (
-                <div>
-                  <ListItem
-                    value={1}
-                    key={`list-ticket-${counter}`}
-                    primaryText={ticket.ticketDate.toDateString()}
-                    secondaryText={ticket.reason}
-                    primaryTogglesNestedList
-                    nestedItems={[<Ticket key={`ticket-${counter}`} ticket={ticket} readOnly />]}
-                  />
-                  <Divider />
-                </div>
-              ))}
+            {this.props.tickets.length > 0 &&
+              this.props.tickets
+                // .filter(
+                //   ticket =>
+                //     ticket.ticketDate >= this.state.startDate &&
+                //     ticket.ticketDate <= this.state.endDate,
+                // )
+                .map((ticket, counter) => (
+                  <div>
+                    <ListItem
+                      value={1}
+                      key={`list-ticket-${counter}`}
+                      primaryText={new Date(ticket.ticketDate).toDateString()}
+                      secondaryText={ticket.reason}
+                      primaryTogglesNestedList
+                      nestedItems={[
+                        <Ticket
+                          key={`ticket-${counter}`}
+                          effects={this.props.effects}
+                          ticket={ticket}
+                          readOnly
+                          admin
+                        />,
+                      ]}
+                    />
+                    <Divider />
+                  </div>
+                ))}
           </List>
         </div>
 

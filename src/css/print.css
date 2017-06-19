@@ -3,8 +3,23 @@
   /*@page {
     size: 6in 4in
   }*/
+  
   .no-print, .no-print *
   {
       display: none !important;
   }
+
+  @page {
+    size: 6in 4in landscape;
+    margin: 0in;
+}
+
+#printable {
+    display: block;
+    transform:translate(-2.09in,5.65in) rotate(90deg);
+    transform-origin: top right;
+    -webkit-box-shadow: none;
+ -moz-box-shadow:    none;
+ box-shadow:         none;
+}
 }
