@@ -1,7 +1,7 @@
 {
   "name": "monti-label",
   "productName": "monti-label",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "create-react-class": "^15.6.0",
     "electron-compile": "^6.4.1",
     "electron-devtools-installer": "^2.2.0",
     "freactal": "^1.0.0",
