@@ -50,7 +50,7 @@
     "electron-devtools-installer": "^2.2.0",
     "freactal": "^1.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "material-ui": "^0.18.0",
+    "material-ui": "^0.18.6",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
     "react-barcode": "^1.1.0",

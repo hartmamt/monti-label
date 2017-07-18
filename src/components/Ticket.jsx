@@ -16,7 +16,11 @@ const formStyle = {
 class Ticket extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { ...this.props.ticket, ticketDate: new Date(), open: false };
+    this.state = {
+      ...this.props.ticket,
+      ticketDate: new Date(),
+      open: false,
+    };
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
@@ -24,9 +28,9 @@ class Ticket extends React.Component {
 
   handleOpen() {
     this.setState({ open: true });
-    // if (this.props.admin) {
-    this.props.effects.createTicket({ ...this.state });
-    // }
+    if (!this.props.admin) {
+      this.props.effects.createTicket({ ...this.state });
+    }
   }
 
   handleClose() {
@@ -87,7 +91,7 @@ class Ticket extends React.Component {
               container="inline"
               disabled={this.props.readOnly}
               value={this.state.ticketDate}
-              onChange={event => this.setState({ ticketDate: event.target.value })}
+              onChange={(event, date) => this.setState({ ticketDate: date })}
             />
           </div>
           <div>
@@ -119,12 +123,12 @@ class Ticket extends React.Component {
                 onChange={event => this.setState({ dispositionBy: event.target.value })}
               />
               <DatePicker
-                hintText="Date"
                 autoOk
+                hintText="Date"
                 floatingLabelText="Date"
                 container="inline"
                 value={this.state.dispositionDate}
-                onChange={event => this.setState({ dispositionDate: event.target.value })}
+                onChange={(event, date) => this.setState({ dispositionDate: date })}
               />
             </div>
             : null}
@@ -137,7 +141,9 @@ class Ticket extends React.Component {
             <div style={{ padding: 20 }}>
               <RaisedButton label="Print" onTouchTap={this.handleOpen} primary />
             </div>
-            <div style={{ padding: 20 }}><RaisedButton label="Reset" secondary /></div>
+            <div style={{ padding: 20 }}>
+              <RaisedButton label="Reset" secondary />
+            </div>
           </div>
         </div>
 
@@ -156,10 +162,11 @@ class Ticket extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
           style={{ padding: 0 }}
+          paperStyle={{ boxShadow: 'none' }}
+          paperProps={{ zDepth: 0 }}
         >
           <PrintableTicket readOnly ticket={{ ...this.state }} />
         </Dialog>
-
       </Paper>
     );
   }

@@ -33,14 +33,11 @@ class PrintableTicket extends React.Component {
           style={{
             fontSize: 18,
             fontWeight: 'bold',
-            textDecoration: 'underline',
             textAlign: 'center',
           }}
         >
-          <ul>
-            HOLD FOR QC REVIEW<br />
-            DO NOT MOVE OR PROCESS WITHOUT APPROVAL FROM QC
-          </ul>
+          HOLD FOR QC REVIEW<br />
+          DO NOT MOVE OR PROCESS WITHOUT APPROVAL FROM QC
         </div>
         <div
           style={{
@@ -53,32 +50,42 @@ class PrintableTicket extends React.Component {
             <table>
               <tr>
                 <td>Part #: </td>
-                <td>{this.state.partNumber}</td>
+                <td>
+                  {this.state.partNumber}
+                </td>
               </tr>
               <tr>
                 <td />
               </tr>
               <tr>
                 <td>Qty: </td>
-                <td>{this.state.quantity}</td>
+                <td>
+                  {this.state.quantity}
+                </td>
               </tr>
               <tr>
                 <td>Job #: </td>
-                <td>{this.state.jobNumber}</td>
+                <td>
+                  {this.state.jobNumber}
+                </td>
               </tr>
               <tr>
                 <td />
               </tr>
               <tr>
                 <td>On Hold By: </td>
-                <td>{this.state.holdBy}</td>
+                <td>
+                  {this.state.holdBy}
+                </td>
               </tr>
               <tr>
                 <td />
               </tr>
               <tr>
                 <td>Date: </td>
-                <td>{this.state.ticketDate.toLocaleDateString('en-US')}</td>
+                <td>
+                  {this.state.ticketDate.toLocaleDateString('en-US')}
+                </td>
               </tr>
               <tr>
                 <td />
@@ -88,7 +95,9 @@ class PrintableTicket extends React.Component {
                 <td />
               </tr>
               <tr>
-                <td colSpan="2">{this.state.reason}</td>
+                <td colSpan="2">
+                  {this.state.reason}
+                </td>
               </tr>
             </table>
           </div>
@@ -97,9 +106,8 @@ class PrintableTicket extends React.Component {
           <Barcode
             displayValue
             width={1}
-            value={
-              `${this.state.ticketDate.toLocaleDateString('en-US')} - ${this.state.partNumber}`
-            }
+            value={`${this.state.ticketDate.toLocaleDateString('en-US')} - ${this.state
+              .partNumber}`}
           />
         </div>
       </div>

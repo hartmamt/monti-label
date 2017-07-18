@@ -1,9 +1,10 @@
 import { provideState, softUpdate } from 'freactal';
 import fetch from 'isomorphic-fetch';
 
-const API = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:3001/api'
-  : 'https://calm-meadow-75161.herokuapp.com/api';
+const API =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3001/api'
+    : 'https://calm-meadow-75161.herokuapp.com/api';
 
 export default provideState({
   initialState: () => ({
@@ -12,11 +13,10 @@ export default provideState({
     tickets: [],
   }),
   effects: {
-    handleBottomNavClick: (effects, page) =>
-      state => Object.assign({}, state, { currentNav: page }),
+    handleBottomNavClick: (effects, page) => state =>
+      Object.assign({}, state, { currentNav: page }),
     setTicketsPending: softUpdate((state, ticketsPending) => ({ ticketsPending })),
     createTicket: (effects, ticket) => {
-      console.log('ticket', ticket);
       const payload = {
         holdBy: ticket.holdBy,
         jobNumber: ticket.jobNumber,
