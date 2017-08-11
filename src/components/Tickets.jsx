@@ -65,13 +65,13 @@ export default class Tickets extends React.Component {
           <List>
             {this.props.tickets.length > 0 &&
               this.props.tickets
-                // .filter(
-                //   ticket =>
-                //     ticket.ticketDate >= this.state.startDate &&
-                //     ticket.ticketDate <= this.state.endDate,
-                // )
-                .map((ticket, counter) => (
-                  <div>
+                .filter(
+                  ticket =>
+                    new Date(ticket.ticketDate) >= this.state.startDate &&
+                    new Date(ticket.ticketDate) <= this.state.endDate,
+                )
+                .map((ticket, counter) =>
+                  (<div>
                     <ListItem
                       value={1}
                       key={`list-ticket-${counter}`}
@@ -89,11 +89,10 @@ export default class Tickets extends React.Component {
                       ]}
                     />
                     <Divider />
-                  </div>
-                ))}
+                  </div>),
+                )}
           </List>
         </div>
-
       </Paper>
     );
   }

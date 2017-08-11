@@ -151,9 +151,19 @@ class Ticket extends React.Component {
           actions={[
             <RaisedButton
               className="no-print"
+              style={{ margin: 10 }}
               label="Print"
               onClick={() => {
                 window.print();
+              }}
+              primary
+            />,
+            <RaisedButton
+              className="no-print"
+              style={{ margin: 10 }}
+              label="Close"
+              onClick={() => {
+                this.handleClose();
               }}
               primary
             />,

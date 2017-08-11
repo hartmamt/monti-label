@@ -11,8 +11,31 @@ export default provideState({
     currentNav: 'ticket',
     ticketsPending: false,
     tickets: [],
+    adminAuth: false,
+    authPending: false,
   }),
   effects: {
+    setAuthPending: softUpdate((state, authPending) => ({ authPending })),
+    setAuth: softUpdate((state, adminAuth) => ({ adminAuth })),
+    handleAdminAuth: (effects, password) => {
+      const payload = {
+        username: 'admin',
+        password,
+      };
+      fetch(`${API}/ticket/authenticate`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      })
+        .then(result => result.json())
+        .then((auth) => {
+          if (auth.message === 'Incorrect password!') {
+            alert('Incorrect Password');
+            effects.setAuth(false);
+          } else {
+            effects.setAuth(auth.isAuthenticated);
+          }
+        });
+    },
     handleBottomNavClick: (effects, page) => state =>
       Object.assign({}, state, { currentNav: page }),
     setTicketsPending: softUpdate((state, ticketsPending) => ({ ticketsPending })),
@@ -23,6 +46,7 @@ export default provideState({
         partNumber: ticket.partNumber,
         quantity: ticket.quantity,
         reason: ticket.reason,
+        ticketDate: ticket.ticketDate,
       };
       fetch(`${API}/ticket`, {
         method: 'POST',

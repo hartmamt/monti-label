@@ -7,6 +7,7 @@ import appState from './state';
 import Ticket from './components/Ticket';
 import Tickets from './components/Tickets';
 import BottomNav from './components/BottomNav';
+import Login from './components/Login';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -15,8 +16,8 @@ injectTapEventPlugin();
 const wrapComponentWithState = appState;
 
 const App = wrapComponentWithState(
-  injectState(({ state, effects }) => (
-    <MuiThemeProvider>
+  injectState(({ state, effects }) =>
+    (<MuiThemeProvider>
       <div
         style={{
           display: 'flex',
@@ -29,7 +30,14 @@ const App = wrapComponentWithState(
       >
         <div style={{ width: '100%', align: 'center', marginBottom: 60 }}>
           {state.currentNav === 'ticket' ? <Ticket effects={effects} admin={false} /> : null}
-          {state.currentNav === 'admin'
+          {state.currentNav === 'admin' && state.adminAuth === false
+            ? <Login
+              handleAdminAuth={effects.handleAdminAuth}
+              effects={effects}
+              tickets={state.tickets}
+            />
+            : null}
+          {state.currentNav === 'admin' && state.adminAuth === true
             ? <Tickets effects={effects} tickets={state.tickets} />
             : null}
         </div>
@@ -40,8 +48,8 @@ const App = wrapComponentWithState(
           />
         </div>
       </div>
-    </MuiThemeProvider>
-  )),
+    </MuiThemeProvider>),
+  ),
 );
 
 export default App;
