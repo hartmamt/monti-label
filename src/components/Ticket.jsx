@@ -24,6 +24,8 @@ class Ticket extends React.Component {
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleReset = this.handleReset.bind(this);
+    this.handleSaveAndClose = this.handleSaveAndClose.bind(this);
   }
 
   handleOpen() {
@@ -40,6 +42,47 @@ class Ticket extends React.Component {
   handleSave() {
     if (this.props.admin) {
       this.props.effects.updateTicket({ ...this.state });
+    }
+  }
+
+  handleSaveAndClose() {
+    if (this.props.admin) {
+      this.props.effects.updateTicket({ ...this.state });
+      this.setState({ open: false });
+      this.props.handleCloseAll();
+    }
+  }
+
+  handleReset() {
+    if (this.props.admin) {
+      this.setState({
+        reason: '',
+        disposition: '',
+        dispositionBy: '',
+        dispositionDate: undefined,
+      });
+      this.setState({
+        ...this.props.ticket,
+        ticketDate: new Date(),
+        open: false,
+      });
+    } else {
+      this.setState({
+        partNumber: '',
+        quantity: undefined,
+        jobNumber: '',
+        holdBy: '',
+        reason: '',
+        disposition: '',
+        dispositionBy: '',
+        ticketDate: new Date(),
+        dispositionDate: undefined,
+      });
+      this.setState({
+        ...this.props.ticket,
+        ticketDate: new Date(),
+        open: false,
+      });
     }
   }
 
@@ -135,6 +178,12 @@ class Ticket extends React.Component {
           {this.props.admin
             ? <div style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}>
               <RaisedButton label="Save" onTouchTap={this.handleSave} primary />
+              <RaisedButton
+                label="Save and Close"
+                onTouchTap={this.handleSaveAndClose}
+                style={{ marginLeft: 20 }}
+                primary
+              />
             </div>
             : null}
           <div style={{ display: 'flex', flexDirection: 'row', flexAlign: 'stretch' }}>
@@ -142,7 +191,7 @@ class Ticket extends React.Component {
               <RaisedButton label="Print" onTouchTap={this.handleOpen} primary />
             </div>
             <div style={{ padding: 20 }}>
-              <RaisedButton label="Reset" secondary />
+              <RaisedButton label="Reset" onTouchTap={this.handleReset} secondary />
             </div>
           </div>
         </div>
@@ -155,6 +204,9 @@ class Ticket extends React.Component {
               label="Print"
               onClick={() => {
                 window.print();
+                this.handleClose();
+                this.props.handleCloseAll();
+                this.handleReset();
               }}
               primary
             />,

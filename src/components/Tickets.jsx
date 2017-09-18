@@ -21,10 +21,13 @@ export default class Tickets extends React.Component {
     this.state = {
       startDate: new Date('1961-12-31T03:24:00'),
       endDate: new Date('2020-12-31T03:24:00'),
+      openedIndex: undefined,
     };
     this.props.effects.getTickets();
     this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
     this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
+    this.handleItemClick = this.handleItemClick.bind(this);
+    this.handleCloseAll = this.handleCloseAll.bind(this);
   }
 
   handleChangeStartDate(event, date) {
@@ -33,6 +36,18 @@ export default class Tickets extends React.Component {
 
   handleChangeEndDate(event, date) {
     this.setState({ endDate: date });
+  }
+
+  handleItemClick(ticketId) {
+    if (ticketId === this.state.openedIndex) {
+      this.setState({ openedIndex: undefined });
+    } else {
+      this.setState({ openedIndex: ticketId });
+    }
+  }
+
+  handleCloseAll() {
+    this.setState({ openedIndex: undefined });
   }
 
   render() {
@@ -70,6 +85,10 @@ export default class Tickets extends React.Component {
                     new Date(ticket.ticketDate) >= this.state.startDate &&
                     new Date(ticket.ticketDate) <= this.state.endDate,
                 )
+                .sort(
+                  (a, b) =>
+                    a.ticketDate > b.ticketDate ? -1 : a.ticketDate < b.ticketDate ? 1 : 0,
+                )
                 .map((ticket, counter) =>
                   (<div>
                     <ListItem
@@ -78,6 +97,7 @@ export default class Tickets extends React.Component {
                       primaryText={new Date(ticket.ticketDate).toDateString()}
                       secondaryText={ticket.reason}
                       primaryTogglesNestedList
+                      open={ticket._id === this.state.openedIndex}
                       nestedItems={[
                         <Ticket
                           key={`ticket-${counter}`}
@@ -85,8 +105,10 @@ export default class Tickets extends React.Component {
                           ticket={ticket}
                           readOnly
                           admin
+                          handleCloseAll={this.handleCloseAll}
                         />,
                       ]}
+                      onClick={() => this.handleItemClick(ticket._id)}
                     />
                     <Divider />
                   </div>),

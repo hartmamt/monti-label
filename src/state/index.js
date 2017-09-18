@@ -67,7 +67,7 @@ export default provideState({
       fetch(`${API}/tickets/${ticket._id}`, {
         method: 'PATCH',
         body: JSON.stringify(payload),
-      }).then(resp => console.log(resp));
+      }).then(() => effects.getTickets());
     },
     getTickets: effects =>
       effects
