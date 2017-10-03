@@ -37,6 +37,7 @@ class Ticket extends React.Component {
 
   handleClose() {
     this.setState({ open: false });
+    this.handleReset();
   }
 
   handleSave() {
@@ -237,7 +238,7 @@ class Ticket extends React.Component {
 Ticket.defaultProps = {
   ticket: {
     partNumber: '',
-    quantity: undefined,
+    quantity: 0,
     jobNumber: '',
     holdBy: '',
     ticketDate: new Date(),
